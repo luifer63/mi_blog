@@ -1,4 +1,4 @@
-export const Peticion = async (url, metodo, datosGuardar = "") => {
+export const Peticion = async (url, metodo, datosGuardar = "", archivos = false) => {
 
     let datos = []
     let cargando = true
@@ -16,22 +16,33 @@ export const Peticion = async (url, metodo, datosGuardar = "") => {
     }
 
     if (metodo == "POST" || metodo == "PUT") {
-        console.log("las opciones")
-        console.log(metodo)
-        opciones = {
-            method: metodo,
-            body: JSON.stringify(datosGuardar),
-            headers: {
-                "Content-Type": "application/json"
+
+        let body = ""
+
+        if (archivos) {
+
+            opciones = {
+                method: metodo,
+                body: datosGuardar,
+
+            }
+
+        } else {
+            opciones = {
+                method: metodo,
+                body: JSON.stringify(datosGuardar),
+                headers: {
+                    "Content-Type": "application/json"
+                }
             }
         }
     }
 
 
-    const peticion = await fetch(url, opciones)  
-    console.log(peticion)  
+    const peticion = await fetch(url, opciones)
+    console.log(peticion)
     datos = await peticion.json()
-    
+
 
     cargando = false
 
